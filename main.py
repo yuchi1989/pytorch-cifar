@@ -18,6 +18,7 @@ from utils import progress_bar
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
 parser.add_argument('--resume', '-r', action='store_true', help='resume from checkpoint')
+parser.add_argument('--epoch', '-e', default=150, type=int, help='number of epoch')
 args = parser.parse_args()
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -49,7 +50,7 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship'
 # Model
 print('==> Building model..')
 # net = VGG('VGG19')
-# net = ResNet18()
+net = ResNet18()
 # net = PreActResNet18()
 # net = GoogLeNet()
 # net = DenseNet121()
@@ -60,7 +61,7 @@ print('==> Building model..')
 # net = ShuffleNetG2()
 # net = SENet18()
 # net = ShuffleNetV2(1)
-net = EfficientNetB0()
+# net = EfficientNetB0()
 net = net.to(device)
 if device == 'cuda':
     net = torch.nn.DataParallel(net)
@@ -136,6 +137,6 @@ def test(epoch):
         best_acc = acc
 
 
-for epoch in range(start_epoch, start_epoch+200):
+for epoch in range(start_epoch, start_epoch+args.epoch):
     train(epoch)
     test(epoch)
